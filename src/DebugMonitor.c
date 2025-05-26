@@ -615,7 +615,7 @@ static volatile uint16_t timingLogWrp = 1;
 static volatile uint64_t timingLogStart = 0;
 
 #ifndef SDK_OS_FREE_RTOS
-static uint32_t systick = 0;
+static volatile uint32_t systick = 0;
 
 extern void isr_systick()
 {

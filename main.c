@@ -59,6 +59,7 @@ void debugmonitor_task(void);
 /*------------- MAIN -------------*/
 int main(void) {
   board_init();
+  TimingLogGetCount(0); // start !
   stdio_init_all();
 
   // init device stack on configured roothub port
@@ -72,16 +73,24 @@ int main(void) {
     board_init_after_tusb();
   }
 
+  TimingLogWrite(28, 3, 1, 0, 0); // setup time after board_init
+
   while (1) {
+    TimingLogWrite(28, 3, 2, 0, 0); // idle call start
     idlecall();
+    TimingLogWrite(28, 3, 1, 0, 0); // idle call end
   }
 }
 
 void idlecall(void)
 {
+  TimingLogWrite(28, 3, 3, 0, 0); // start tud_task
   tud_task(); // tinyusb device task
+  TimingLogWrite(28, 3, 4, 0, 0); // start led_blonking_task
   led_blinking_task();
+  TimingLogWrite(28, 3, 5, 0, 0); // start midi_task
   midi_task();
+  TimingLogWrite(28, 3, 6, 0, 0); // start debugmonitor_task
   debugmonitor_task();
 }
 
